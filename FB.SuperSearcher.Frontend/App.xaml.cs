@@ -1,8 +1,8 @@
-﻿using FB.SuperSearcher.Backend.Handlers;
-using FB.SuperSearcher.Backend.Handlers.Implementations;
+﻿using FB.SuperSearcher.Backend;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
+
 
 namespace FB.SuperSearcher.Frontend
 {
@@ -22,7 +22,7 @@ namespace FB.SuperSearcher.Frontend
         private void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<MainWindow>();
-            services.AddSingleton<ISearchHandler, SearchHandler>();
+            services.ConfigureServicesBackend();
         }
 
         private void OnStartup(object sender, StartupEventArgs e)
