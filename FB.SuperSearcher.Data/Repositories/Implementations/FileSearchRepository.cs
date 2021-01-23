@@ -4,21 +4,28 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using FB.SuperSearcher.Data.Mappers;
+using System.Threading.Tasks;
 
 namespace FB.SuperSearcher.Data.Repositories.Implementations
 {
-    public class FileSearchRepository : ISearchRepository
+    public class FileSearchRepository : IFileSearchRepository
     {
-        public List<FileSearchResultModel> Search(string searchTerm)
+        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm)
+        {
+            return await Task.Run(() => SearchRoutine(searchTerm)).ConfigureAwait(false);
+        }
+
+        private List<SearchResultModel> SearchRoutine(string searchTerm)
         {
             //TODO: dont hardcode result count
-            var resultCount = 5;
-            var result = new List<FileSearchResultModel>();
+            var maxCount = 5;
+            var result = new List<SearchResultModel>();
+            if (string.IsNullOrWhiteSpace(searchTerm)) return result;
+
             var paths = GetLogicalDrives();
 
-            while (paths.TryPeek(out _) && result.Count < resultCount - 1)
+            while (paths.TryPop(out var folder) && result.Count < maxCount - 1)
             {
-                var folder = paths.Pop();
                 if (IsMatchingFolder(folder, searchTerm, out var directoryInfo, out var continueLoop))
                 {
                     result.Add(directoryInfo.MapToModel());
@@ -31,6 +38,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
                     var matchingFiles = Directory
                         .EnumerateFiles(folder)
                         .Where(x => IsMatchingFile(x, searchTerm))
+                        .Take(maxCount - result.Count)
                         .Select(x => GetFileModel(x))
                         .ToList();
 
@@ -49,10 +57,8 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
 
             return result
                 .OrderBy(x => x.FullPath)
-                .Take(resultCount)
                 .ToList();
         }
-
         private Stack<string> GetLogicalDrives()
         {
             var stack = new Stack<string>();
@@ -78,7 +84,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
 
             return directoryInfo.Name.Contains(match, StringComparison.CurrentCultureIgnoreCase);
         }
-        private FileSearchResultModel GetFileModel(string path)
+        private SearchResultModel GetFileModel(string path)
         {
             var file = new FileInfo(path);
             return file.MapToModel();
@@ -89,10 +95,8 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
             var fileName = file.Name;
             if (!string.IsNullOrWhiteSpace(file.Extension))
             {
-                //remove file extention from name
                 fileName = file.Name.Replace(file.Extension, "");
             }
-            //if(file.)
 
             return fileName.Contains(match, StringComparison.CurrentCultureIgnoreCase);
         }

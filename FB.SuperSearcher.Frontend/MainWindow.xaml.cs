@@ -17,7 +17,7 @@ namespace FB.SuperSearcher.Frontend
 
         private void PerformSearch(object sender, RoutedEventArgs e)
         {
-            SearchResultListView.ItemsSource = _searchHandler.Search(SearchTextbox.Text);
+            SearchResultListView.ItemsSource = _searchHandler.Search(SearchTextbox.Text).Result;
         }
     }
 }

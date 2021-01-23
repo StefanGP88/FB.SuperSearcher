@@ -1,21 +1,27 @@
 ﻿using FB.SuperSearcher.Backend.Mappers;
 using FB.SuperSearcher.Backend.Models;
-using FB.SuperSearcher.Data.Repositories;
+using FB.SuperSearcher.Data;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FB.SuperSearcher.Backend.Handlers.Implementations
 {
     public class SearchHandler : ISearchHandler
     {
-        private readonly ISearchRepository _repository;
-        public SearchHandler(ISearchRepository searchRepository)
+        private readonly IUnitOfWork _uow;
+        public SearchHandler(IUnitOfWork unitOfWork)
         {
-            _repository = searchRepository;
+            _uow = unitOfWork;
         }
-        public List<SearchResultViewModel> Search(string searchTerm)
+        public async Task<List<SearchResultViewModel>> Search(string searchTerm)
         {
-            var result = _repository.Search(searchTerm);
-            return result.ConvertAll(x => x.MapToViewModel());
+            var fileResults = await _uow.FileSearchRepository.SearchAsync(searchTerm).ConfigureAwait(false);
+            var webResult = await _uow.WebSearchRepository.SearchAsync(searchTerm).ConfigureAwait(false);
+
+            var result = fileResults.ConvertAll(x => x.MapToViewModel());
+            result.AddRange(webResult.ConvertAll(x => x.MapToViewModel()));
+
+            return result;
         }
     }
 }

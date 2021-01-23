@@ -5,13 +5,15 @@ namespace FB.SuperSearcher.Backend.Mappers
 {
     public static class SearchResultMappers
     {
-        public static SearchResultViewModel MapToViewModel(this FileSearchResultModel model)
+        public static SearchResultViewModel MapToViewModel(this SearchResultModel model)
         {
             if (model == null) return null;
             return new SearchResultViewModel
             {
-                IsWebResult = false,
-                Path = model.FullPath
+                Path = model.FullPath,
+                Title = model.Name,
+                SearchResultType = model.ResultType
+
             };
         }
     }
