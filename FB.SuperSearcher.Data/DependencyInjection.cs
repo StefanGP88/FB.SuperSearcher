@@ -27,6 +27,13 @@ namespace FB.SuperSearcher.Data
                 x.MaxFileAndFolderResults = int.Parse(configuration.GetSection("SearchSettings:MaxFileAndFolderResults").Value);
                 x.MaxWebResult = int.Parse(configuration.GetSection("SearchSettings:MaxWebResult").Value);
             });
+
+            if (bool.Parse(configuration.GetSection("RunMigrationOnAppStart").Value))
+            {
+                var build = services.BuildServiceProvider();
+                var dbContext = build.GetService<SearchStatisticDbContext>();
+                dbContext.Database.Migrate();
+            }
         }
     }
 }
