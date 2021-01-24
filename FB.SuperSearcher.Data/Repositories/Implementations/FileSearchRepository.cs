@@ -5,26 +5,35 @@ using System.IO;
 using System.Linq;
 using FB.SuperSearcher.Data.Mappers;
 using System.Threading.Tasks;
+using System.Threading;
+using FB.SuperSearcher.Data.Settings;
+using Microsoft.Extensions.Options;
 
 namespace FB.SuperSearcher.Data.Repositories.Implementations
 {
     public class FileSearchRepository : IFileSearchRepository
     {
-        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm)
+        private readonly SearchSettings _settings;
+
+        public FileSearchRepository(IOptions<SearchSettings> settings)
         {
-            return await Task.Run(() => SearchRoutine(searchTerm)).ConfigureAwait(false);
+            _settings = settings.Value;
+        }
+        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation)
+        {
+            return await Task.Run(() => SearchRoutine(searchTerm, cancellation)).ConfigureAwait(false);
         }
 
-        private List<SearchResultModel> SearchRoutine(string searchTerm)
+        private List<SearchResultModel> SearchRoutine(string searchTerm, CancellationToken cancellation)
         {
-            //TODO: dont hardcode result count
-            const int maxCount = 5;
             var result = new List<SearchResultModel>();
             if (string.IsNullOrWhiteSpace(searchTerm)) return result;
 
             var paths = GetLogicalDrives();
 
-            while (paths.TryPop(out var folder) && result.Count < maxCount - 1)
+            while (paths.TryPop(out var folder)
+                && result.Count < _settings.MaxFileAndFolderResults - 1
+                && !cancellation.IsCancellationRequested)
             {
                 if (IsMatchingFolder(folder, searchTerm, out var directoryInfo, out var continueLoop))
                 {
@@ -38,7 +47,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
                     var matchingFiles = Directory
                         .EnumerateFiles(folder)
                         .Where(x => IsMatchingFile(x, searchTerm))
-                        .Take(maxCount - result.Count)
+                        .Take(_settings.MaxFileAndFolderResults - result.Count)
                         .Select(x => GetFileModel(x))
                         .ToList();
 

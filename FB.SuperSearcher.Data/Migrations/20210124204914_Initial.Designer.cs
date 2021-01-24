@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FB.SuperSearcher.Data.Migrations
 {
     [DbContext(typeof(SearchStatisticDbContext))]
-    [Migration("20210123224352_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20210124204914_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

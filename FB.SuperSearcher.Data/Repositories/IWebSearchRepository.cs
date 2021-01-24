@@ -1,11 +1,12 @@
 ﻿using FB.SuperSearcher.Data.Models;
 using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace FB.SuperSearcher.Data.Repositories
 {
     public interface IWebSearchRepository
     {
-        Task<List<SearchResultModel>> SearchAsync(string searchTerm);
+        Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation);
     }
 }

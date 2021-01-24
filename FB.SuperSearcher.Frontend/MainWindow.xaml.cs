@@ -25,7 +25,7 @@ namespace FB.SuperSearcher.Frontend
 
         private void PerformSearch(string searchTerm)
         {
-            SearchResultListView.ItemsSource = _searchHandler.Search(searchTerm).GetAwaiter().GetResult();
+            SearchResultListView.ItemsSource = _searchHandler.Search(searchTerm, default).GetAwaiter().GetResult();
             _statisticsHandler.AddOrUpdateSearchStatistic(searchTerm, default).GetAwaiter().GetResult();
         }
 

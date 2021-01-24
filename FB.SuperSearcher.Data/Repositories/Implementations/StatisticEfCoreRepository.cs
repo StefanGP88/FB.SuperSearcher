@@ -27,26 +27,23 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
 
         public async Task<List<SearchTermCharactersDbModel>> GetCharacterOcurrences(char character, CancellationToken cancellation)
         {
-
             if (!await _dbContext.SearchTermCharacters.AnyAsync(x => x.Character == character, cancellation).ConfigureAwait(false))
                 return new List<SearchTermCharactersDbModel>();
 
-            var charss = await _dbContext.SearchTermCharacters
+            var termIds = _dbContext.SearchTermCharacters
                 .AsNoTracking()
                 .Where(x => x.Character == character)
-                .Select(x=>x.SearchTermId)
-                .ToListAsync(cancellation)
-                .ConfigureAwait(false);
+                .Select(x => x.SearchTermId);
 
-            var termss = await _dbContext.SearchTerms
+            var term = await _dbContext.SearchTerms
                 .AsNoTracking()
-                .Where(x=> charss.Contains(x.Id))
+                .Where(x=> termIds.Contains(x.Id))
                 .Include(x => x.SearchDates)
                 .Include(x => x.Characters.Where(v=>v.Character == character))
                 .ToListAsync(cancellation)
                 .ConfigureAwait(false);
 
-            return termss.SelectMany(x => x.Characters).ToList();
+            return term.SelectMany(x => x.Characters).ToList();
         }
 
         public async Task AddSearchDate(SearchDateDbModel model, CancellationToken cancellation)

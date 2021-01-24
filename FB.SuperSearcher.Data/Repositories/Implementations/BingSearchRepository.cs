@@ -7,32 +7,37 @@ using Flurl.Http;
 using System.Linq;
 using FB.SuperSearcher.Data.Mappers;
 using FB.SuperSearcher.Data.Enums;
+using System.Threading;
+using Microsoft.Extensions.Options;
+using FB.SuperSearcher.Data.Settings;
 
 namespace FB.SuperSearcher.Data.Repositories.Implementations
 {
     public class BingSearchRepository : IWebSearchRepository
     {
-        private readonly string _subscriptionKey = "ed1a652d8dfd45339aadb0fce83aec5a";
-        private readonly string _baseUri = "https://api.bing.microsoft.com/v7.0/search";
-        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm)
+        private readonly SearchSettings _settings;
+        public BingSearchRepository(IOptions<SearchSettings> settings)
         {
-            const int maxCount = 5;
+            _settings = settings.Value;
+        }
+        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation)
+        {
             var result = new List<SearchResultModel>();
-            var queryResult = await QueryBing(searchTerm, maxCount).ConfigureAwait(false);
+            var queryResult = await QueryBing(searchTerm, _settings.MaxWebResult, cancellation).ConfigureAwait(false);
 
             if (queryResult?.WebPages?.Value?.Any() == true)
             {
                 var webpageResults = queryResult.WebPages.Value
-                    .Take(maxCount)
+                    .Take(_settings.MaxWebResult)
                     .Select(x => x.MapToModel(SearchResultTypes.WebPage))
                     .ToList();
                 result.AddRange(webpageResults);
             }
 
-            if (result.Count < maxCount && queryResult?.News?.Value?.Any() == true)
+            if (result.Count < _settings.MaxWebResult && queryResult?.News?.Value?.Any() == true)
             {
                 var articleResults = queryResult.News.Value
-                    .Take(maxCount - result.Count)
+                    .Take(_settings.MaxWebResult - result.Count)
                     .Select(x => x.MapToModel(SearchResultTypes.Article))
                     .ToList();
                 result.AddRange(articleResults);
@@ -40,28 +45,23 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
             return result;
         }
 
-        private async Task<BingSearchResultModel> QueryBing(string term, int maxCount)
+        private async Task<BingSearchResultModel> QueryBing(string term, int maxCount, CancellationToken cancellation)
         {
             try
             {
-                return await _baseUri
+                return await _settings.BingApiUrl
                     .SetQueryParam("q", Uri.EscapeDataString(term))
                     .SetQueryParam("mkt", "en-us")
                     .SetQueryParam("textDecorations", bool.TrueString)
                     .SetQueryParam("count", maxCount)
                     .SetQueryParam("offset", 0)
-                    .WithHeader("Ocp-Apim-Subscription-Key", _subscriptionKey)
-                    .GetJsonAsync<BingSearchResultModel>()
+                    .WithHeader("Ocp-Apim-Subscription-Key", _settings.BingSubscriptionKey)
+                    .GetJsonAsync<BingSearchResultModel>(cancellation)
                     .ConfigureAwait(false);
             }
-            catch(FlurlHttpException e)
+            catch
             {
                 return null;
-            }
-            catch(Exception e)
-            {
-                return null;
-
             }
         }
     }
