@@ -1,4 +1,6 @@
 ﻿using FB.SuperSearcher.Data.Repositories;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace FB.SuperSearcher.Data
 {
@@ -6,5 +8,8 @@ namespace FB.SuperSearcher.Data
     {
         IWebSearchRepository WebSearchRepository { get; }
         IFileSearchRepository FileSearchRepository { get; }
+        IStatisticRepository StatisticRepository { get; }
+
+        Task<int> SaveChangesAsync(CancellationToken cancellation);
     }
 }

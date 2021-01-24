@@ -13,7 +13,6 @@ namespace FB.SuperSearcher.Backend.Mappers
                 Path = model.FullPath,
                 Title = model.Name,
                 SearchResultType = model.ResultType
-
             };
         }
     }

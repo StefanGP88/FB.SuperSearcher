@@ -18,7 +18,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
         private List<SearchResultModel> SearchRoutine(string searchTerm)
         {
             //TODO: dont hardcode result count
-            var maxCount = 5;
+            const int maxCount = 5;
             var result = new List<SearchResultModel>();
             if (string.IsNullOrWhiteSpace(searchTerm)) return result;
 

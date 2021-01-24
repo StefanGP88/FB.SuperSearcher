@@ -3,7 +3,6 @@ using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Windows;
 
-
 namespace FB.SuperSearcher.Frontend
 {
     /// <summary>
@@ -21,7 +20,13 @@ namespace FB.SuperSearcher.Frontend
 
         private void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<MainWindow>();
+            services.AddTransient<MainWindow>();
+            services.AddTransient<SearchTermStatisticsWindow>();
+            services.AddTransient<CharacterStatistecsWindow>();
+            services.AddSingleton<IServiceProvider>(x =>
+           {
+               return _serviceProvider;
+           });
             services.ConfigureServicesBackend();
         }
 

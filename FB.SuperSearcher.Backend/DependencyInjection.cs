@@ -10,6 +10,7 @@ namespace FB.SuperSearcher.Backend
         public static void ConfigureServicesBackend(this IServiceCollection services)
         {
             services.AddSingleton<ISearchHandler, SearchHandler>();
+            services.AddSingleton<IStatisticsHandler, StatisticHandler>();
             services.ConfigureServicesData();
         }
     }

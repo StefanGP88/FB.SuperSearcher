@@ -321,7 +321,7 @@ namespace FB.SuperSearcher.Data.Models
         [JsonProperty("value")]
         public Value Value { get; set; }
     }
-    
+
     public class Mainline
     {
         [JsonProperty("items")]

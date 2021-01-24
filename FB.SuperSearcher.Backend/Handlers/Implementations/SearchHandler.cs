@@ -15,10 +15,12 @@ namespace FB.SuperSearcher.Backend.Handlers.Implementations
         }
         public async Task<List<SearchResultViewModel>> Search(string searchTerm)
         {
+            var result = new List<SearchResultViewModel>();
+
             var fileResults = await _uow.FileSearchRepository.SearchAsync(searchTerm).ConfigureAwait(false);
             var webResult = await _uow.WebSearchRepository.SearchAsync(searchTerm).ConfigureAwait(false);
 
-            var result = fileResults.ConvertAll(x => x.MapToViewModel());
+            result.AddRange(fileResults.ConvertAll(x => x.MapToViewModel()));
             result.AddRange(webResult.ConvertAll(x => x.MapToViewModel()));
 
             return result;

@@ -16,7 +16,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
         private readonly string _baseUri = "https://api.bing.microsoft.com/v7.0/search";
         public async Task<List<SearchResultModel>> SearchAsync(string searchTerm)
         {
-            var maxCount = 5;
+            const int maxCount = 5;
             var result = new List<SearchResultModel>();
             var queryResult = await QueryBing(searchTerm, maxCount).ConfigureAwait(false);
 
@@ -42,15 +42,27 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
 
         private async Task<BingSearchResultModel> QueryBing(string term, int maxCount)
         {
-            return await _baseUri
-                .SetQueryParam("q", Uri.EscapeDataString(term))
-                .SetQueryParam("mkt", "en-us")
-                .SetQueryParam("textDecorations", bool.TrueString)
-                .SetQueryParam("count", maxCount)
-                .SetQueryParam("offset", 0)
-                .WithHeader("Ocp-Apim-Subscription-Key", _subscriptionKey)
-                .GetJsonAsync<BingSearchResultModel>()
-                .ConfigureAwait(false);
+            try
+            {
+                return await _baseUri
+                    .SetQueryParam("q", Uri.EscapeDataString(term))
+                    .SetQueryParam("mkt", "en-us")
+                    .SetQueryParam("textDecorations", bool.TrueString)
+                    .SetQueryParam("count", maxCount)
+                    .SetQueryParam("offset", 0)
+                    .WithHeader("Ocp-Apim-Subscription-Key", _subscriptionKey)
+                    .GetJsonAsync<BingSearchResultModel>()
+                    .ConfigureAwait(false);
+            }
+            catch(FlurlHttpException e)
+            {
+                return null;
+            }
+            catch(Exception e)
+            {
+                return null;
+
+            }
         }
     }
 }

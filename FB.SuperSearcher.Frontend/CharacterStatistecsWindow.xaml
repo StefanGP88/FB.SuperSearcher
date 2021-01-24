@@ -1,0 +1,27 @@
+﻿<Window x:Class="FB.SuperSearcher.Frontend.CharacterStatistecsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:FB.SuperSearcher.Frontend"
+        mc:Ignorable="d"
+        Title="CharacterStatistecsWindow" Height="450" Width="800">
+    <Grid>
+        <Label Content="Character" HorizontalAlignment="Left" Margin="43,30,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="CharacterTextBox" HorizontalAlignment="Left" Margin="130,35,0,0" Text="{Binding Character}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>        
+        <Label Content="Total count" HorizontalAlignment="Left" Margin="43,60,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="TotalCountTextBox" HorizontalAlignment="Left" Margin="130,65,0,0" Text="{Binding TotalCount}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>        
+        <Label Content="Largest count" HorizontalAlignment="Left" Margin="43,90,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="LargestCountTextBox" HorizontalAlignment="Left" Margin="130,95,0,0" Text="{Binding LargestCount}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>        
+        <Label Content="Smallest count" HorizontalAlignment="Left" Margin="43,120,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="SmallestCountTextBox" HorizontalAlignment="Left" Margin="130,125,0,0" Text="{Binding SmallestCount}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+        <Label Content="Longest term" HorizontalAlignment="Left" Margin="43,150,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="LongestTermTextBox" HorizontalAlignment="Left" Margin="130,155,0,0" Text="{Binding LongestTerm}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+        <Label Content="Shortest term" HorizontalAlignment="Left" Margin="43,180,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="ShortestTermTextBox" HorizontalAlignment="Left" Margin="130,185,0,0" Text="{Binding ShortestTerm}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+        <Label Content="First time" HorizontalAlignment="Left" Margin="43,210,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="FirstOccurenceTextBox" HorizontalAlignment="Left" Margin="130,215,0,0" Text="{Binding FirstOccurence}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+        <Label Content="Last time" HorizontalAlignment="Left" Margin="43,240,0,0" VerticalAlignment="Top"/>
+        <TextBox x:Name="LastOccurenceTextBox" HorizontalAlignment="Left" Margin="130,245,0,0" Text="{Binding LastOccurence}" TextWrapping="Wrap" VerticalAlignment="Top" Width="190"/>
+    </Grid>
+</Window>
