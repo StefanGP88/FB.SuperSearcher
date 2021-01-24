@@ -37,7 +37,7 @@ namespace FB.SuperSearcher.Backend.Handlers.Implementations
         public async Task<CharacterStatisticViewModel> GetCharacterStatistics(char character, CancellationToken cancellation)
         {
             var characterOccurences = await _uow.StatisticRepository.GetCharacterOcurrences(character, cancellation).ConfigureAwait(false);
-            if (!characterOccurences.Any())
+            if (characterOccurences.Count == 0)
             {
                 return characterOccurences.MapToEmptyViewModel(character);
             }
