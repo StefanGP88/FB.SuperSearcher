@@ -4,17 +4,10 @@ namespace FB.SuperSearcher.Data.Models
 {
     public class SearchStatisticDbContext : DbContext
     {
-        //private const string connectionString = "Data Source=localhost;Initial Catalog=SearcherDb;Integrated Security=true;MultipleActiveResultSets=True;";
         public SearchStatisticDbContext() : base() { }
         public SearchStatisticDbContext(DbContextOptions<SearchStatisticDbContext> options) : base(options)
         {
         }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-
-        //    //optionsBuilder.UseSqlServer("asd");
-        //    //optionsBuilder.UseSqlServer(connectionString);
-        //}
 
         public DbSet<SearchTermDbModel> SearchTerms { get; set; }
         public DbSet<SearchTermCharactersDbModel> SearchTermCharacters { get; set; }
