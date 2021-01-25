@@ -12,7 +12,7 @@ namespace FB.SuperSearcher.Data.Models
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
 
-        //    optionsBuilder.UseSqlServer("asd");
+        //    //optionsBuilder.UseSqlServer("asd");
         //    //optionsBuilder.UseSqlServer(connectionString);
         //}
 
