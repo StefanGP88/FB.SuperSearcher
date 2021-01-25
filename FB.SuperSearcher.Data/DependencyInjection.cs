@@ -5,6 +5,7 @@ using FB.SuperSearcher.Data.Settings;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace FB.SuperSearcher.Data
 {
@@ -27,13 +28,15 @@ namespace FB.SuperSearcher.Data
                 x.MaxFileAndFolderResults = int.Parse(configuration.GetSection("SearchSettings:MaxFileAndFolderResults").Value);
                 x.MaxWebResult = int.Parse(configuration.GetSection("SearchSettings:MaxWebResult").Value);
             });
-
+        }
+        public static void ServiceProviderTasksData(this IServiceProvider serviceProvider, IConfigurationRoot configuration)
+        {
+            var dbContext = serviceProvider.GetService<SearchStatisticDbContext>();
             if (bool.Parse(configuration.GetSection("RunMigrationOnAppStart").Value))
             {
-                var build = services.BuildServiceProvider();
-                var dbContext = build.GetService<SearchStatisticDbContext>();
                 dbContext.Database.Migrate();
             }
+            dbContext.Database.CanConnect();
         }
     }
 }

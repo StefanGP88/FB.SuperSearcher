@@ -4,10 +4,8 @@ namespace FB.SuperSearcher.Data.Models
 {
     public class SearchStatisticDbContext : DbContext
     {
-        public SearchStatisticDbContext() : base() { }
-        public SearchStatisticDbContext(DbContextOptions<SearchStatisticDbContext> options) : base(options)
-        {
-        }
+        public SearchStatisticDbContext() { }
+        public SearchStatisticDbContext(DbContextOptions<SearchStatisticDbContext> options) : base(options) { }
 
         public DbSet<SearchTermDbModel> SearchTerms { get; set; }
         public DbSet<SearchTermCharactersDbModel> SearchTermCharacters { get; set; }

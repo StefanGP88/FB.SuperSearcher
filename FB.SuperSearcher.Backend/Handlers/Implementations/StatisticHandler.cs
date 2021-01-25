@@ -3,7 +3,6 @@ using FB.SuperSearcher.Backend.Models;
 using FB.SuperSearcher.Data;
 using FB.SuperSearcher.Data.Mappers;
 using FB.SuperSearcher.Data.Models;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 

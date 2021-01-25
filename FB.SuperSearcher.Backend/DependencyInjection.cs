@@ -3,6 +3,7 @@ using FB.SuperSearcher.Data;
 using FB.SuperSearcher.Backend.Handlers;
 using FB.SuperSearcher.Backend.Handlers.Implementations;
 using Microsoft.Extensions.Configuration;
+using System;
 
 namespace FB.SuperSearcher.Backend
 {
@@ -13,6 +14,11 @@ namespace FB.SuperSearcher.Backend
             services.AddSingleton<ISearchHandler, SearchHandler>();
             services.AddSingleton<IStatisticsHandler, StatisticHandler>();
             services.ConfigureServicesData(configuration);
+        }
+
+        public static void ServiceProviderTasksBackend(this IServiceProvider serviceProvider, IConfigurationRoot configuration)
+        {
+            serviceProvider.ServiceProviderTasksData(configuration);
         }
     }
 }

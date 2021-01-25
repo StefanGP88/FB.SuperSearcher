@@ -2,11 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Configuration;
 using System.IO;
 using System.Windows;
 
-#pragma warning disable RCS1021 // Convert lambda expression body to expression-body.
 namespace FB.SuperSearcher.Frontend
 {
     /// <summary>
@@ -25,7 +23,12 @@ namespace FB.SuperSearcher.Frontend
                 .Build();
             ConfigureServices(services);
             _serviceProvider = services.BuildServiceProvider();
+            ServiceProviderTasks();
+        }
 
+        public void ServiceProviderTasks()
+        {
+            _serviceProvider.ServiceProviderTasksBackend(_configurationRoot);
         }
 
         private void ConfigureServices(IServiceCollection services)
@@ -33,10 +36,7 @@ namespace FB.SuperSearcher.Frontend
             services.AddTransient<MainWindow>();
             services.AddTransient<SearchTermStatisticsWindow>();
             services.AddTransient<CharacterStatistecsWindow>();
-            services.AddSingleton<IServiceProvider>(x =>
-            {
-               return _serviceProvider;
-           });
+            services.AddSingleton(_ => _serviceProvider);
             services.ConfigureServicesBackend(_configurationRoot);
         }
 
@@ -47,4 +47,3 @@ namespace FB.SuperSearcher.Frontend
         }
     }
 }
-#pragma warning restore RCS1021 // Convert lambda expression body to expression-body.
