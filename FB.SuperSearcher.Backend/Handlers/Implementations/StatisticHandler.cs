@@ -15,21 +15,21 @@ namespace FB.SuperSearcher.Backend.Handlers.Implementations
         {
             _uow = unitOfWork;
         }
-        public async Task AddOrUpdateSearchStatistic(string searchTerm, CancellationToken cancellation)
+        public async Task AddOrUpdateSearchTermStatistic(string searchTerm, CancellationToken cancellation)
         {
-            var termStats = await _uow.StatisticRepository.FindSearchTermFrom(searchTerm, cancellation).ConfigureAwait(false);
+            var termStats = await _uow.StatisticRepository.GetSearchTerm(searchTerm, cancellation).ConfigureAwait(false);
 
             if (termStats == null)
                 await AddNewSerchTerm(searchTerm, cancellation).ConfigureAwait(false);
             else
                 await UpdateSeachTerm(termStats, cancellation).ConfigureAwait(false);
 
-            _ = await _uow.SaveChangesAsync(cancellation).ConfigureAwait(false);
+            _ = await _uow.SaveChanges(cancellation).ConfigureAwait(false);
         }
 
         public async Task<SearchTermStatisticsViewModel> GetSerchTermStatistics(string searchTerm, CancellationToken cancellation)
         {
-            var termStats = await _uow.StatisticRepository.FindSearchTermFrom(searchTerm, cancellation).ConfigureAwait(false);
+            var termStats = await _uow.StatisticRepository.GetSearchTerm(searchTerm, cancellation).ConfigureAwait(false);
             return termStats.MapToViewModel();
         }
 

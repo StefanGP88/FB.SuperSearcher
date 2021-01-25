@@ -37,7 +37,7 @@ namespace FB.SuperSearcher.Frontend
             else
             {
                 SearchResultListView.ItemsSource = _searchHandler.Search(searchTerm, default).GetAwaiter().GetResult();
-                _statisticsHandler.AddOrUpdateSearchStatistic(searchTerm, default);
+                _statisticsHandler.AddOrUpdateSearchTermStatistic(searchTerm, default);
             }
         }
 

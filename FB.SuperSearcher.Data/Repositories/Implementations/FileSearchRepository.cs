@@ -19,7 +19,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
         {
             _settings = settings.Value;
         }
-        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation)
+        public async Task<List<SearchResultModel>> Search(string searchTerm, CancellationToken cancellation)
         {
             return await Task.Run(() => SearchRoutine(searchTerm, cancellation)).ConfigureAwait(false);
         }

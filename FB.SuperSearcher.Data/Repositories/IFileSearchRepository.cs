@@ -7,6 +7,6 @@ namespace FB.SuperSearcher.Data.Repositories
 {
     public interface IFileSearchRepository
     {
-        Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation);
+        Task<List<SearchResultModel>> Search(string searchTerm, CancellationToken cancellation);
     }
 }

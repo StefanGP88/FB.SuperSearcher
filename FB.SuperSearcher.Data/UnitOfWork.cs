@@ -20,7 +20,7 @@ namespace FB.SuperSearcher.Data
             _statisticDbContext = searchStatisticDbContext;
         }
 
-        public async Task<int> SaveChangesAsync(CancellationToken cancellation)
+        public async Task<int> SaveChanges(CancellationToken cancellation)
         {
             return await _statisticDbContext.SaveChangesAsync(cancellation).ConfigureAwait(false);
         }

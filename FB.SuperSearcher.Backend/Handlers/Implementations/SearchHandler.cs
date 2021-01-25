@@ -19,8 +19,8 @@ namespace FB.SuperSearcher.Backend.Handlers.Implementations
         {
             var searchTasks = new[]
             {
-                _uow.FileSearchRepository.SearchAsync(searchTerm, cancellation),
-                _uow.WebSearchRepository.SearchAsync(searchTerm, cancellation)
+                _uow.FileSearchRepository.Search(searchTerm, cancellation),
+                _uow.WebSearchRepository.Search(searchTerm, cancellation)
             };
             var taskComplete = await Task.WhenAll(searchTasks).ConfigureAwait(false);
 

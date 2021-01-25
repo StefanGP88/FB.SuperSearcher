@@ -10,6 +10,6 @@ namespace FB.SuperSearcher.Data
         IFileSearchRepository FileSearchRepository { get; }
         IStatisticRepository StatisticRepository { get; }
 
-        Task<int> SaveChangesAsync(CancellationToken cancellation);
+        Task<int> SaveChanges(CancellationToken cancellation);
     }
 }

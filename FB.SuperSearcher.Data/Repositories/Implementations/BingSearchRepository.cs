@@ -20,7 +20,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
         {
             _settings = settings.Value;
         }
-        public async Task<List<SearchResultModel>> SearchAsync(string searchTerm, CancellationToken cancellation)
+        public async Task<List<SearchResultModel>> Search(string searchTerm, CancellationToken cancellation)
         {
             var result = new List<SearchResultModel>();
             var queryResult = await QueryBing(searchTerm, _settings.MaxWebResult, cancellation).ConfigureAwait(false);

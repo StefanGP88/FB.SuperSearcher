@@ -15,7 +15,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
         {
             _dbContext = dbContext;
         }
-        public async Task<SearchTermDbModel> FindSearchTermFrom(string Term, CancellationToken cancellation)
+        public async Task<SearchTermDbModel> GetSearchTerm(string Term, CancellationToken cancellation)
         {
             return await _dbContext.SearchTerms
                 .AsNoTracking()
