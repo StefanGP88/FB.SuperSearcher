@@ -4,13 +4,8 @@ namespace FB.SuperSearcher.Data.Models
 {
     public class SearchTermCharactersDbModel
     {
-        private char _character;
         public Guid Id { get; set; }
-        public char Character
-        {
-            get { return _character; }
-            set { _character = char.ToLowerInvariant(value); }
-        }
+        public char Character { get; set; }
         public int Count { get; set; }
 
         public Guid SearchTermId { get; set; }

@@ -1,7 +1,6 @@
 ﻿using FB.SuperSearcher.Backend.Handlers;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 
 namespace FB.SuperSearcher.Frontend
@@ -23,28 +22,28 @@ namespace FB.SuperSearcher.Frontend
             _serviceProvider = serviceProvider;
         }
 
-        private void PerformSearch(string searchTerm)
+        private string GetSearchTerm()
         {
-            SearchResultListView.ItemsSource = _searchHandler.Search(searchTerm, default).GetAwaiter().GetResult();
-            _statisticsHandler.AddOrUpdateSearchStatistic(searchTerm, default).GetAwaiter().GetResult();
+            return SearchTextbox.Text.ToLowerInvariant();
         }
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
-            var searchTerm = SearchTextbox.Text;
+            var searchTerm = GetSearchTerm();
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
                 MessageBox.Show("please enter a search term");
             }
             else
             {
-                PerformSearch(searchTerm);
+                SearchResultListView.ItemsSource = _searchHandler.Search(searchTerm, default).GetAwaiter().GetResult();
+                _statisticsHandler.AddOrUpdateSearchStatistic(searchTerm, default);
             }
         }
 
         private void StatisticButton_Click(object sender, RoutedEventArgs e)
         {
-            var searchTerm = SearchTextbox.Text;
+            var searchTerm = GetSearchTerm();
             if (string.IsNullOrWhiteSpace(searchTerm))
             {
                 MessageBox.Show("please enter a search term");
@@ -59,7 +58,7 @@ namespace FB.SuperSearcher.Frontend
 
         private void CharStatsButton_Click(object sender, RoutedEventArgs e)
         {
-            var character = SearchTextbox.Text;
+            var character = GetSearchTerm();
             if (string.IsNullOrWhiteSpace(character))
             {
                 MessageBox.Show("please enter a character");

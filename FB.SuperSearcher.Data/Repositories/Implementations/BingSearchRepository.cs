@@ -59,7 +59,7 @@ namespace FB.SuperSearcher.Data.Repositories.Implementations
                     .GetJsonAsync<BingSearchResultModel>(cancellation)
                     .ConfigureAwait(false);
             }
-            catch
+            catch(Exception e)
             {
                 return null;
             }

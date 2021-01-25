@@ -45,7 +45,7 @@ namespace FB.SuperSearcher.Backend.Mappers
         {
             if (list == null) return null;
 
-            return new CharacterStatisticViewModel
+            var viewModel = new CharacterStatisticViewModel
             {
                 Character = list[0].Character,
                 TotalCount = list.Sum(x => x.SearchTerm.SearchDates.Count * x.Count),
@@ -53,9 +53,10 @@ namespace FB.SuperSearcher.Backend.Mappers
                 LastOccurence = list.SelectMany(x => x.SearchTerm.SearchDates).Max(x => x.SearchDate),
                 LargestCount = list.Max(x => x.Count),
                 SmallestCount = list.Min(x => x.Count),
-                LongestTerm = list.Max(x => x.SearchTerm.SearchTerm),
-                ShortestTerm = list.Min(x => x.SearchTerm.SearchTerm)
+                LongestTerm = list.Aggregate(string.Empty, (longest, current) => longest.Length > current.SearchTerm.Length ? longest : current.SearchTerm.SearchTerm)
             };
+            viewModel.ShortestTerm = list.Aggregate(viewModel.LongestTerm, (shortest, current) => shortest.Length < current.SearchTerm.Length ? shortest : current.SearchTerm.SearchTerm);
+            return viewModel;
         }
     }
 }

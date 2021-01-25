@@ -5,13 +5,8 @@ namespace FB.SuperSearcher.Data.Models
 {
     public class SearchTermDbModel
     {
-        private string _searchTerm;
         public Guid Id { get; set; }
-        public string SearchTerm
-        {
-            get { return _searchTerm; }
-            set { _searchTerm = value.ToLowerInvariant(); }
-        }
+        public string SearchTerm { get; set; }
         public int Length { get; set; }
 
         public List<SearchDateDbModel> SearchDates { get; set; }

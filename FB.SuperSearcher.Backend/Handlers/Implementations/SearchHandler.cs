@@ -2,6 +2,7 @@
 using FB.SuperSearcher.Backend.Models;
 using FB.SuperSearcher.Data;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -16,15 +17,15 @@ namespace FB.SuperSearcher.Backend.Handlers.Implementations
         }
         public async Task<List<SearchResultViewModel>> Search(string searchTerm, CancellationToken cancellation)
         {
-            var result = new List<SearchResultViewModel>();
+            var searchTasks = new[]
+            {
+                _uow.FileSearchRepository.SearchAsync(searchTerm, cancellation),
+                _uow.WebSearchRepository.SearchAsync(searchTerm, cancellation)
+            };
+            var taskComplete = await Task.WhenAll(searchTasks).ConfigureAwait(false);
 
-            var fileResults = await _uow.FileSearchRepository.SearchAsync(searchTerm, cancellation).ConfigureAwait(false);
-            var webResult = await _uow.WebSearchRepository.SearchAsync(searchTerm, cancellation).ConfigureAwait(false);
-
-            result.AddRange(fileResults.ConvertAll(x => x.MapToViewModel()));
-            result.AddRange(webResult.ConvertAll(x => x.MapToViewModel()));
-
-            return result;
+            var result = taskComplete.SelectMany(x => x).ToList();
+            return result.ConvertAll(x => x.MapToViewModel());
         }
     }
 }
